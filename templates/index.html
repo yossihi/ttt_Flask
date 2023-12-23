@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tic tac toe</title>
+    <style>
+        .btn {
+            height: 150px;
+            width: 150px;
+            margin: 10px;
+            background-color: rgb(119, 166, 179);
+            color: rgb(3, 3, 3);
+            font-size: 70px;
+        }
+
+        .textbox {
+            width: 450px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: xx-large;
+            background-color: aquamarine;
+        }
+        
+    </style>
+</head>
+
+<body class="main">
+    <div id="buttons" onclick="btn_click()" style="border: 1px solid black; width: max-content;">
+        <button class="btn" id="0">-</button>
+        <button class="btn" id="1">-</button>
+        <button class="btn" id="2">-</button><br>
+        <button class="btn" id="3">-</button>
+        <button class="btn" id="4">-</button>
+        <button class="btn" id="5">-</button><br>
+        <button class="btn" id="6">-</button>
+        <button class="btn" id="7">-</button>
+        <button class="btn" id="8">-</button>
+    </div>
+    <div id="UItext" class="textbox">
+        <h2>player X please start the game</h2>
+    </div>
+    <div>
+        <button onclick="restartGame()" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: large;
+         background-color: rgb(149, 248, 248); border-color: aquamarine;">Restart the game</button>
+    </div>
+
+    <script>
+
+        let playerFlag = "X"
+        let tictacLst = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+        let msg = document.getElementById("UItext");
+
+        let wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]]
+
+        function btn_click() {
+            if (event.target.innerText == "-") {
+                event.target.innerText = playerFlag
+                tictacLst[event.target.id] = playerFlag
+                console.log(tictacLst);
+                if (winCheck()) {
+                    msgChanger(true)
+
+                } else {
+                    playerFlag = playerFlag == "X" ? "O" : "X"
+                    msgChanger()
+                }
+            }
+        }
+
+        function msgChanger(bool) {
+            if (bool) {
+                msg.innerHTML = `<h2>player X you won the game</h2>`;
+                for (let index = 0; index < 9; index++) {
+                    let oneBtn = document.getElementById(`${index}`)
+                    if (oneBtn.innerText == "-") {
+                        oneBtn.disabled = true
+                    }
+                }
+            } else {
+                msg.innerHTML = `<h2>player ${playerFlag} it's your turn</h2>`;
+            }
+        }
+
+        function winCheck() {
+            for (let win = 0; win < wins.length; win++) {
+                let winner = true
+                let temp = wins[win]
+                for (let index = 0; index < temp.length; index++) {
+                    if (tictacLst[temp[index]] != playerFlag) {
+                        winner = false
+                    }
+                }
+                if (winner) {
+                    return true
+                    break
+                }
+            }
+            return false
+        }
+
+        function restartGame() {
+            for (let index = 0; index < 9; index++) {
+                let btn = document.getElementById(`${index}`)
+                btn.innerText = "-"
+                playerFlag = "X"
+                tictacLst = ["-", "-", "-", "-", "-", "-", "-", "-", "-"]
+                btn.disabled = false
+
+            }
+            msg.innerHTML = `<h2>player X please start the game</h2>`
+        }
+
+    </script>
+</body>
+
+</html>
